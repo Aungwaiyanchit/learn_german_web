@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(uuid())
+  username      String
+  email         String   @unique
+  password      String?
+  profile_image String?
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+}
+
+model Chapter {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?
+  order       Int      @default(0)
+  colorTag    String?
+  // Store markdown or JSON (e.g., tiptap) for lesson content
+  contentMd   String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  vocabularies Vocabulary[]
+}
+
+model Vocabulary {
+  id          String  @id @default(cuid())
+  chapterId   String
+  term        String
+  translation String
+  pos         String? // part of speech
+  exampleDe   String? // example sentence German
+  exampleEn   String? // example sentence English
+  audioUrl    String?
+
+  chapter Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@index([chapterId])
+}
+
+model Grammar {
+  id              String @id @default(cuid())
+  title           String
+  description     String @default("")
+  level           String @default("")
+  markdownContent String
+  url             String @default("")
+}
