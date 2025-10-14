@@ -2,12 +2,13 @@ import { prisma } from "@/app/lib/prisma";
 import { NextResponse } from "next/server";
 
 interface Params {
-    params: { chapter: string };
+    params: Promise<{ chapter: string }>;
 }
 
 export async function GET(req: Request, { params }: Params) {
     try {
-        const { chapter: chapterParam } = await params;
+        const resolvedParams = await params;
+        const { chapter: chapterParam } = resolvedParams;
 
         const chapter = await prisma.chapter.findFirst({
             where: {

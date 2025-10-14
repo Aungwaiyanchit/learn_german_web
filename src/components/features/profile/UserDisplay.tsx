@@ -1,10 +1,8 @@
-"use client";
 
-import { useSession } from "next-auth/react";
+import { auth } from "@/auth";
 
-const UserDisplay = () => {
-    const { data: session } = useSession();
-    console.log(session);
+const UserDisplay = async () => {
+    const  session = await auth();
     return (
         <>
             {session?.user?.email}

@@ -30,6 +30,7 @@ export async function GET() {
         const chapters = await prisma.chapter.findMany();
         return new Response(JSON.stringify(chapters), { status: 200 });
     } catch (error) {
+        console.log(error)
         return new Response("Failed to fetch chapters" + error, { status: 500 });
     }
 }

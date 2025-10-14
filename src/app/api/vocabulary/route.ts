@@ -32,7 +32,7 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-    const authError = await protectRoute(req as any);
+    const authError = await protectRoute(req);
     if (authError) return authError;
     try {
         const body = await req.json();
