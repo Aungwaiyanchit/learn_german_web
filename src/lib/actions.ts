@@ -15,8 +15,6 @@ export async function fetchVocabulary(page: number, pageSize: number) {
             page,
             pageSize,
         },
-        cacheTags: ['vocabulary'],
-        cacheTtl: 120,
     });
     return res.data as { data: VocabResponse[]; total: number }
 }

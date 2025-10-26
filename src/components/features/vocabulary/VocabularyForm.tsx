@@ -25,10 +25,7 @@ function VocabularyForm() {
     useEffect(() => {
         const fetchChapters = async () => {
             try {
-                const response = await api.get('/chapters', {
-                    cacheTags: ['chapters'],
-                    cacheTtl: 600,
-                });
+                const response = await api.get('/chapters');
                 setChapters(response.data);
             } catch (error) {
                 console.error('Error fetching chapters:', error);
@@ -50,7 +47,6 @@ function VocabularyForm() {
             const response = await api.post('/api/vocabulary', data);
             if (response.status === 201) {
                 form.reset();
-                api.invalidateTag('vocabulary');
                 alert('Vocabulary created successfully!');
             } else {
                 alert('Failed to create vocabulary.');
