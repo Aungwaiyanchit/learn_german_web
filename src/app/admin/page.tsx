@@ -5,7 +5,10 @@ import { Chapter } from "../lib/models";
 import Link from "next/link";
 
 export default async function Page() {
-    const { data: chapters }: { data: Chapter[] } = await api.get("/chapters");
+    const { data: chapters }: { data: Chapter[] } = await api.get("/chapters", {
+        cacheTags: ["chapters"],
+        cacheTtl: 600,
+    });
     return (
         <div className="m-2">
             <Link href="admin/chapters/add">

@@ -10,8 +10,15 @@ import { VocabResponse } from '../../types/models';
 export type FormData = z.infer<typeof signInSchema>;
 
 export async function fetchVocabulary(page: number, pageSize: number) {
-    const res = await api.get(`/vocabulary?page=${page}&pageSize=${pageSize}`,)
-    return res.data as Promise<{ data: VocabResponse[]; total: number }>
+    const res = await api.get('/vocabulary', {
+        params: {
+            page,
+            pageSize,
+        },
+        cacheTags: ['vocabulary'],
+        cacheTtl: 120,
+    });
+    return res.data as { data: VocabResponse[]; total: number }
 }
 
 export async function authenticate(

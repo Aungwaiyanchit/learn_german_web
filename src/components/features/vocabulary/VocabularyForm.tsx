@@ -24,9 +24,15 @@ function VocabularyForm() {
 
     useEffect(() => {
         const fetchChapters = async () => {
-            const response = await fetch('/api/chapters');
-            const data = await response.json();
-            setChapters(data);
+            try {
+                const response = await api.get('/chapters', {
+                    cacheTags: ['chapters'],
+                    cacheTtl: 600,
+                });
+                setChapters(response.data);
+            } catch (error) {
+                console.error('Error fetching chapters:', error);
+            }
         };
         fetchChapters();
     }, []);
@@ -44,6 +50,7 @@ function VocabularyForm() {
             const response = await api.post('/api/vocabulary', data);
             if (response.status === 201) {
                 form.reset();
+                api.invalidateTag('vocabulary');
                 alert('Vocabulary created successfully!');
             } else {
                 alert('Failed to create vocabulary.');
